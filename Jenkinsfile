@@ -8,5 +8,18 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
+        stage('build docke image'){
+            when {
+                branch 'master'
+                }
+            steps{
+                script{
+                    app=docker.build("nikhilmandy/train-schedule")
+                    app.inside{
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
+            }
+        }    
     }
 }
